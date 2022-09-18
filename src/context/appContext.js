@@ -1,8 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-} from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   createTodoApi,
@@ -15,11 +11,16 @@ import {
   CHANGE_THEME,
   GET_TODOS_BEGIN,
   GET_TODOS_SUCCESS,
+  GET_TODOS_ERROR,
   CREATE_TODO_BEGIN,
+  CREATE_TODO_ERROR,
   CREATE_TODO_SUCCESS,
   DELETE_TODO_BEGIN,
   UPDATE_TODO_BEGIN,
   CREATE_USER_BEGIN,
+  DELETE_TODO_ERROR,
+  UPDATE_TODO_ERROR,
+  CREATE_USER_SUCCESS,
 } from "./actions";
 import reducer from "./reducer";
 
@@ -32,7 +33,6 @@ const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: "",
-  alertType: "",
   todos: [],
   user: user ? user : "",
   theme: theme ? theme : "dark",
@@ -55,6 +55,12 @@ export const TodoContextProvider = ({ children }) => {
   const createUser = async (username) => {
     dispatch({ type: CREATE_USER_BEGIN });
     try {
+      dispatch({
+        type: CREATE_USER_SUCCESS,
+        payload: {
+          user: username,
+        },
+      });
       localStorage.setItem("user", username.toString());
       navigate("/");
     } catch {
@@ -71,12 +77,11 @@ export const TodoContextProvider = ({ children }) => {
       });
       getTodos();
     } catch (error) {
-      // dispatch({
-      //   type: CREATE_TODO_ERROR_,
-      //   payload: { msg: error.response.data.msg },
-      // });
+      dispatch({
+        type: CREATE_TODO_ERROR,
+        payload: { alertText: "Something went wrong!!" },
+      });
     }
-    //clearAlert();
   };
 
   const getTodos = async () => {
@@ -90,12 +95,11 @@ export const TodoContextProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      // dispatch({
-      //   type: CREATE_TODO_ERROR_,
-      //   payload: { msg: error.response.data.msg },
-      // });
+      dispatch({
+        type: GET_TODOS_ERROR,
+        payload: { alertText: "Something went wrong!!" },
+      });
     }
-    //clearAlert();
   };
 
   const deleteTodo = async (id) => {
@@ -104,26 +108,24 @@ export const TodoContextProvider = ({ children }) => {
       await deleteTodoApi(id);
       getTodos();
     } catch (error) {
-      // dispatch({
-      //   type: CREATE_TODO_ERROR_,
-      //   payload: { msg: error.response.data.msg },
-      // });
+      dispatch({
+        type: DELETE_TODO_ERROR,
+        payload: { alertText: "Something went wrong!!" },
+      });
     }
-    //clearAlert();
   };
 
   const updateTodo = async (id, todo) => {
     dispatch({ type: UPDATE_TODO_BEGIN });
     try {
-       await updateTodoApi(id, todo);
+      await updateTodoApi(id, todo);
       getTodos();
     } catch (error) {
-      // dispatch({
-      //   type: CREATE_TODO_ERROR_,
-      //   payload: { msg: error.response.data.msg },
-      // });
+      dispatch({
+        type: UPDATE_TODO_ERROR,
+        payload: { alertText: "Something went wrong!!" },
+      });
     }
-    //clearAlert();
   };
 
   const updateComplete = async (id, isCompleted) => {
@@ -132,12 +134,11 @@ export const TodoContextProvider = ({ children }) => {
       await updateCompleteApi(id, isCompleted);
       getTodos();
     } catch (error) {
-      // dispatch({
-      //   type: CREATE_TODO_ERROR_,
-      //   payload: { msg: error.response.data.msg },
-      // });
+      dispatch({
+        type: UPDATE_TODO_ERROR,
+        payload: { alertText: "Something went wrong!!" },
+      });
     }
-    //clearAlert();
   };
 
   const values = {
