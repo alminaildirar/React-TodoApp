@@ -11,27 +11,16 @@ import {
   UPDATE_TODO_SUCCESS,
   UPDATE_TODO_ERROR,
   DELETE_TODO_BEGIN,
+  CHANGE_THEME,
 } from "./actions";
 
-import { initialState } from "./appContext";
-
 const reducer = (state, action) => {
-  // if (action.type === DISPLAY_ALERT) {
-  //   return {
-  //     ...state,
-  //     showAlert: true,
-  //     alertType: 'danger',
-  //     alertText: 'Please provide all values!',
-  //   }
-  // }
-  // if (action.type === CLEAR_ALERT) {
-  //   return {
-  //     ...state,
-  //     showAlert: false,
-  //     alertType: '',
-  //     alertText: '',
-  //   }
-  // }
+  if (action.type === CHANGE_THEME) {
+    return {
+      ...state,
+      theme: action.payload.theme,
+    };
+  }
 
   if (action.type === CREATE_USER_BEGIN) {
     return { ...state, isLoading: true };

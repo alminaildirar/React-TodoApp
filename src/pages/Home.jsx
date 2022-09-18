@@ -3,13 +3,15 @@ import Header from "../components/Header";
 import List from "../components/List";
 import ReactSwitch from "react-switch";
 import Navbar from "../components/Navbar";
+import { useTodo } from "../context/appContext";
 
-const Home = ({ theme, toggleTheme }) => {
+const Home = () => {
+  const { theme, toggleTheme } = useTodo();
+
   return (
     <div className="App" id={theme}>
       <Navbar theme={theme} />
       <div className="switch">
-        {/* <label> {theme === "light" ? "Light Mode" : "Dark Mode"}</label> */}
         <ReactSwitch
           onChange={toggleTheme}
           checked={theme === "dark"}
