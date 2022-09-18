@@ -1,4 +1,6 @@
 import {
+  CREATE_USER_BEGIN,
+  CREATE_USER_SUCCESS,
   GET_TODOS_BEGIN,
   GET_TODOS_SUCCESS,
   GET_TODOS_ERROR,
@@ -9,8 +11,6 @@ import {
   UPDATE_TODO_SUCCESS,
   UPDATE_TODO_ERROR,
   DELETE_TODO_BEGIN,
-  DELETE_TODO_SUCCESS,
-  DELETE_TODO_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -33,14 +33,24 @@ const reducer = (state, action) => {
   //   }
   // }
 
+  if (action.type === CREATE_USER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_USER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      user: action.payload.user,
+    };
+  }
+
   if (action.type === CREATE_TODO_BEGIN) {
     return { ...state, isLoading: true };
   }
   if (action.type === CREATE_TODO_SUCCESS) {
     return {
       ...state,
-      isLoading: true,
-      todo: action.payload.todo,
+      isLoading: false,
     };
   }
   if (action.type === CREATE_TODO_ERROR) {
@@ -65,7 +75,10 @@ const reducer = (state, action) => {
   if (action.type === DELETE_TODO_BEGIN) {
     return { ...state, isLoading: true };
   }
-  if (action.type === DELETE_TODO_SUCCESS) {
+  if (action.type === UPDATE_TODO_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === UPDATE_TODO_SUCCESS) {
     return {
       ...state,
       isLoading: false,
