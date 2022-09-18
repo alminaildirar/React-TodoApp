@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTodo } from "../context/appContext";
 import ListItem from "./ListItem";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -8,6 +8,7 @@ const List = () => {
 
   useEffect(() => {
     getTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
