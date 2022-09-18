@@ -5,7 +5,14 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import { createTodoApi, deleteTodoApi, getTodosApi } from "../api/api";
+import { useNavigate } from "react-router-dom";
+import {
+  createTodoApi,
+  deleteTodoApi,
+  getTodosApi,
+  updateCompleteApi,
+  updateTodoApi,
+} from "../api/api";
 import {
   GET_TODOS_BEGIN,
   GET_TODOS_SUCCESS,
@@ -14,9 +21,13 @@ import {
   CREATE_TODO_ERROR_,
   CREATE_TODO_SUCCESS,
   DELETE_TODO_BEGIN,
-  DELETE_TODO_SUCCESS,
+  UPDATE_TODO_BEGIN,
+  UPDATE_TODO_SUCCESS,
+  CREATE_USER_BEGIN,
 } from "./actions";
 import reducer from "./reducer";
+
+const user = localStorage.getItem("user");
 
 const TodoContext = createContext();
 
@@ -26,10 +37,22 @@ const initialState = {
   alertText: "",
   alertType: "",
   todos: [],
+  user: user ? user : "",
 };
 
 export const TodoContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const navigate = useNavigate();
+
+  const createUser = async (username) => {
+    dispatch({ type: CREATE_USER_BEGIN });
+    try {
+      localStorage.setItem("user", username.toString());
+      navigate("/");
+    } catch {
+      console.log("error");
+    }
+  };
 
   const createTodo = async (todo) => {
     dispatch({ type: CREATE_TODO_BEGIN });
@@ -38,6 +61,7 @@ export const TodoContextProvider = ({ children }) => {
       dispatch({
         type: CREATE_TODO_SUCCESS,
       });
+      getTodos();
     } catch (error) {
       // dispatch({
       //   type: CREATE_TODO_ERROR_,
@@ -69,11 +93,37 @@ export const TodoContextProvider = ({ children }) => {
   const deleteTodo = async (id) => {
     dispatch({ type: DELETE_TODO_BEGIN });
     try {
-      const res = await deleteTodoApi(id);
+      await deleteTodoApi(id);
+      getTodos();
+    } catch (error) {
+      // dispatch({
+      //   type: CREATE_TODO_ERROR_,
+      //   payload: { msg: error.response.data.msg },
+      // });
+    }
+    //clearAlert();
+  };
+
+  const updateTodo = async (id, todo) => {
+    dispatch({ type: UPDATE_TODO_BEGIN });
+    try {
+      const res = await updateTodoApi(id, todo);
       console.log("res", res);
-      dispatch({
-        type: DELETE_TODO_SUCCESS,
-      });
+      getTodos();
+    } catch (error) {
+      // dispatch({
+      //   type: CREATE_TODO_ERROR_,
+      //   payload: { msg: error.response.data.msg },
+      // });
+    }
+    //clearAlert();
+  };
+
+  const updateComplete = async (id, isCompleted) => {
+    dispatch({ type: UPDATE_TODO_BEGIN });
+    try {
+      await updateCompleteApi(id, isCompleted);
+      getTodos();
     } catch (error) {
       // dispatch({
       //   type: CREATE_TODO_ERROR_,
@@ -88,6 +138,9 @@ export const TodoContextProvider = ({ children }) => {
     createTodo,
     getTodos,
     deleteTodo,
+    updateTodo,
+    createUser,
+    updateComplete,
   };
 
   return <TodoContext.Provider value={values}>{children}</TodoContext.Provider>;
