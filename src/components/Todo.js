@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import ContentEditable from "react-contenteditable";
 
 class Todo extends React.Component {

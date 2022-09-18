@@ -1,9 +1,7 @@
 import React, {
   createContext,
   useContext,
-  useEffect,
   useReducer,
-  useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,13 +15,10 @@ import {
   CHANGE_THEME,
   GET_TODOS_BEGIN,
   GET_TODOS_SUCCESS,
-  GET_TODOS_ERROR,
   CREATE_TODO_BEGIN,
-  CREATE_TODO_ERROR_,
   CREATE_TODO_SUCCESS,
   DELETE_TODO_BEGIN,
   UPDATE_TODO_BEGIN,
-  UPDATE_TODO_SUCCESS,
   CREATE_USER_BEGIN,
 } from "./actions";
 import reducer from "./reducer";
@@ -120,7 +115,7 @@ export const TodoContextProvider = ({ children }) => {
   const updateTodo = async (id, todo) => {
     dispatch({ type: UPDATE_TODO_BEGIN });
     try {
-      const res = await updateTodoApi(id, todo);
+       await updateTodoApi(id, todo);
       getTodos();
     } catch (error) {
       // dispatch({
