@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useTodo } from "../context/appContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const { createUser, loading } = useTodo();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username.length < 3) {
       alert("Username must be at least three character length.");
     } else {
+      navigate('/')
       createUser(username);
+      
     }
   };
 

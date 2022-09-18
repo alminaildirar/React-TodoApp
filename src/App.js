@@ -13,6 +13,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/login" element={user ? <Home /> : <Login />} />
       <Route
         exact
         path="/"
@@ -22,7 +23,6 @@ function App() {
           </PrivateRoute>
         }
       />
-      <Route path="/login" element={user ? <Home /> : <Login />} />
     </Routes>
   );
 }
