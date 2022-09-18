@@ -1,38 +1,324 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #eee;
+}
+
+input,
+textarea,
+button {
+  background: transparent;
+  border-radius: 0;
+  font-size: 0.95rem;
+}
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  font-size: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background: url(img/gok.jpg) no-repeat center; */
+  /* background: rgb(2, 46, 46) no-repeat center; */
+}
+.container {
+  display: flex;
+  width: 400px;
+  max-height: 90%;
+  margin: 50px 0;
+  background: rgba(238, 238, 238, 0.5);
+  border-radius: 15px;
+}
+#light {
+  background-color: #a3cef1;
+}
+
+#dark {
+  background-color: #051c28;
+}
+.todo {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.739);
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  overflow-y: hidden;
+}
+.header {
+  padding: 20px 20px 10px 20px;
+  border-bottom: 1px solid #eee;
+}
+.header span {
+  font-size: 14px;
+}
+.input {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.add-input {
+  width: 70%;
+}
+.add-btn {
+  padding: 5px 15px;
+  border-radius: 1rem;
+  border: 1px solid #eee;
+  background-color: #eee;
+  color: #333;
+  transition: all 0.3s ease-in;
+}
+.add-btn:hover {
+  cursor: pointer;
+  background-color: transparent;
+  color: #eee;
+}
+.list {
+  overflow: auto;
+}
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+.list::-webkit-scrollbar-button {
+  height: 5px;
+}
+.list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.216);
+  border-radius: 40px;
+}
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(187, 189, 199, 0.314);
+}
+.card-left {
+  width: 90%;
+  display: flex;
+  align-items: center;
+}
+.card-info {
+  width: calc(100% - 32px);
+  overflow-x: hidden;
+}
+
+.resolve:checked ~ .card-info {
+  opacity: 0.5;
+}
+.resolve:checked ~ .card-info .task {
+  text-decoration: line-through;
+}
+.resolve {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #bbbdc7;
+  color: #00000000;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.resolve:checked {
+  background: #6ebb95 url(assets/check.svg) no-repeat center;
+  background-size: 21px;
+  border-color: #5ea180;
+}
+.resolve::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* height: calc(100% - 1px); */
+  background-color: rgba(183, 221, 243, 0.139);
+  display: none;
+}
+.resolve:checked::after {
+  display: block;
+}
+.card .delete-btn {
+  opacity: 1;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #e75978;
+  color: #e75978;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+.card:hover {
+  background: #c4e9ff23;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 550px;
+    max-height: 85%;
+  }
+}
+@media (min-width: 992px) {
+  .card .delete-btn {
+    opacity: 0;
+  }
+  .card:hover .delete-btn {
+    opacity: 1;
+  }
+}
+#dark .task div {
+  color: #012030;
+}
+#dark .todo {
+  background-color: rgba(77, 104, 123, 0.3);
+}
+#dark .todo input::placeholder {
+  color: #012030;
+}
+#dark .delete-btn {
+  color: #5b0910;
+  border-color: #5b0910;
+}
+.fa-moon,
+.fa-sun {
+  color: #f4c533;
+}
+
+.loading {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 20px 0;
 }
 
-.App-link {
-  color: #61dafb;
+.navbar {
+  width: 100%;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Login */
+
+.page {
+  background-color: #051c28;
+  height: 100vh;
+  display: flex;
+}
+.section {
+  background-color: #6b7c86;
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+section .title {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 100px;
+  font-weight: bold;
+  color: #fff;
+}
+.form {
+  margin-top: 30px;
+  padding: 0 20px;
+}
+.form-container {
+  margin-top: 20px;
+}
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+  margin-top: 10px;
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 5px;
+}
+.btn-container {
+  margin: 30px 0px;
+  text-align: center;
+}
+.login-btn {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid black;
+  background-color: #eeeeee;
+  color: black;
+  transition: 0.3 ease-in-out all;
+  font-size: 16px;
+}
+.login-btn:hover {
+  transform: scale(1.05);
+  transition: 0.2s all;
+}
+
+.edit-btn {
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.edit-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.complete {
+  text-decoration: line-through;
+}
+
+.todo-checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.checked {
+  background-color: green;
+}
+
+.complete {
+  overflow-x: hidden;
+  white-space: wrap;
+  text-overflow: ellipsis;
+  opacity: 0.5;
+}
+
+.edit-check-btn {
+  margin-right: 20px;
+  cursor: pointer;
+  background-color: green;
+  border-radius: 50%;
+}
+.trash-btn {
+  cursor: pointer;
+}
+.trash-color {
+  color: red;
 }
