@@ -32,7 +32,11 @@ const Login = () => {
           </div>
 
           <div className="btn-container">
-            <button type="submit" className="login-btn">
+            <button
+              type="submit"
+              className="login-btn"
+              disabled={username.length < 1}
+            >
               {loading ? "Please Wait..." : "Login"}
             </button>
           </div>

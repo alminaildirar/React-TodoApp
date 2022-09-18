@@ -14,6 +14,7 @@ import {
   updateTodoApi,
 } from "../api/api";
 import {
+  CHANGE_THEME,
   GET_TODOS_BEGIN,
   GET_TODOS_SUCCESS,
   GET_TODOS_ERROR,
@@ -28,6 +29,7 @@ import {
 import reducer from "./reducer";
 
 const user = localStorage.getItem("user");
+const theme = localStorage.getItem("theme");
 
 const TodoContext = createContext();
 
@@ -38,11 +40,22 @@ const initialState = {
   alertType: "",
   todos: [],
   user: user ? user : "",
+  theme: theme ? theme : "dark",
 };
 
 export const TodoContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
+
+  const toggleTheme = () => {
+    dispatch({
+      type: CHANGE_THEME,
+      payload: {
+        theme: state.theme === "dark" ? "light" : "dark",
+      },
+    });
+    localStorage.setItem("theme", state.theme === "dark" ? "light" : "dark");
+  };
 
   const createUser = async (username) => {
     dispatch({ type: CREATE_USER_BEGIN });
@@ -108,7 +121,6 @@ export const TodoContextProvider = ({ children }) => {
     dispatch({ type: UPDATE_TODO_BEGIN });
     try {
       const res = await updateTodoApi(id, todo);
-      console.log("res", res);
       getTodos();
     } catch (error) {
       // dispatch({
@@ -141,6 +153,7 @@ export const TodoContextProvider = ({ children }) => {
     updateTodo,
     createUser,
     updateComplete,
+    toggleTheme,
   };
 
   return <TodoContext.Provider value={values}>{children}</TodoContext.Provider>;
